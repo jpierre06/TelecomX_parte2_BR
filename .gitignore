@@ -1,0 +1,9 @@
+# Ignorar arquivos de checkpoint notebooks
+.ipynb_checkpoints/*
+
+# Ignorar diretório de teste
+teste/*
+
+# Ignorar arquivos de cache Python
+scripts/__pycache__/*
+__pycache__/*
