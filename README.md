@@ -216,20 +216,8 @@ As métricas foram escolhidas com base no impacto de negócio:
 
 <br>
 
-## 🤝 Contribuição
 
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
-Abrir issues para relatar bugs ou sugerir melhorias
-
-Enviar pull requests com novas funcionalidades
-
-Melhorar documentação ou performance do código
-
-<br>
-
-
-# 📬 Contato
+## 📬 Contato
 
 Se você tiver dúvidas, sugestões ou quiser contribuir com melhorias, sinta-se à vontade para entrar em contato ou abrir uma issue no repositório.
 
