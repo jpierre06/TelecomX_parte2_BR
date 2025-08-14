@@ -193,11 +193,11 @@ def describe_full_df(_df: pd.DataFrame, extend_metrics=False):
                 'skew': pd.Series.skew,
                 'shapiro_stat': shapiro_stat,
                 'shapiro_pvalue': shapiro_pvalue,
+                'entropy': stats.entropy,
                 'autocorr': pd.Series.autocorr,
                 'circvar': stats.circvar,
                 'circmean': stats.circmean,
                 'circstd': stats.circstd,
-                'entropy': stats.entropy,
                 'kstat': stats.kstat,
                 'kstatvar': stats.kstatvar,
             })
@@ -218,7 +218,7 @@ def describe_full_df(_df: pd.DataFrame, extend_metrics=False):
         df_temp = pd.DataFrame(dict_data)
         df_temp.index = dict_functions.keys()
 
-        return pd.concat([df_temp])
+        return df_temp
     
 
 def describe_full_df_segmented(df:pd.DataFrame, column_numeric:str, column_category:str, category_values:list=None, extend_metrics=False):
