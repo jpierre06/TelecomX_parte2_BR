@@ -7,3 +7,6 @@ teste/*
 # Ignorar arquivos de cache Python
 scripts/__pycache__/*
 __pycache__/*
+
+# Ignorar cache de algorithms
+catboost_info/*
