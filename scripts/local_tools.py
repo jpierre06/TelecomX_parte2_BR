@@ -1,12 +1,21 @@
 from typing import Literal
+from typing import Union
 import jupyterlab
 import ipykernel
+import re
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from scipy import stats
+import pingouin as pg
 import math
+
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools.tools import add_constant
+
 from tabulate import tabulate
+from optbinning import OptimalBinning
+
 
 
 def print_notebook_versions():
@@ -278,29 +287,165 @@ def convert_types(df, list_columns: list, list_types: list):
     return df
 
 
-def get_chi_square(df:pd.DataFrame, reference_category: str, target_category: list):
+def get_chi_square(df:pd.DataFrame, reference_category: str, target_category: list, significance_limit=0.05):
     '''Calculates the chi-square statistic for two categorical variables in a DataFrame.'''
     
     data_stat = []
     for c in target_category:
         contingency_table = pd.crosstab(df[c], df[reference_category])
         # chi2: Chi-square statistic
-        chi2, p, _, _ = stats.chi2_contingency(contingency_table)
+        chi2, p, dof, _ = stats.chi2_contingency(contingency_table)
+        # p: p-value of the test 
+        if p < significance_limit:
+            significance = 1
+        else:
+            significance = 0
+        values = dict(variable = c, chi_square = chi2, p_value = p, dof = dof, significance = significance)
+
+        data_stat.append(values)
+
+        df_stat = pd.DataFrame(data_stat)
+        df_stat.chi_square = df_stat.chi_square.round(4)
+        df_stat.p_value = df_stat.p_value.round(6)
+        df_stat.dof = df_stat.dof.round(4)
+        df_stat.sort_values(by='variable', ascending=True, inplace=True)
+
+    return df_stat
+
+
+def get_ttest_ind(df:pd.DataFrame, reference_group: str, numerical_variables: list):
+    '''Calculates the ttest_ind statistic for two group of numerical variables in a DataFrame.'''
+    
+    data_stat = []
+    for nv in numerical_variables:
+        
+        group_1 = df[df[reference_group] == False][nv]
+        group_2 = df[df[reference_group] == True][nv]
+
+        # t_stat: ttest_ind statistic
+        t_stat, p = stats.ttest_ind(group_1, group_2)
         # p: p-value of the test 
         if p < 0.05:
             significance = 1
         else:
             significance = 0
-        values = dict(variable = c, chi_square = chi2, p_value = p, significance = significance)
+        values = dict(variable = nv, t_stat = t_stat, p_value = p, significance = significance)
 
         data_stat.append(values)
 
-        df_chi_square = pd.DataFrame(data_stat)
-        df_chi_square.chi_square = df_chi_square.chi_square.round(4)
-        df_chi_square.p_value = df_chi_square.p_value.round(6)
-        df_chi_square.sort_values(by='variable', ascending=True, inplace=True)
+        df_stat = pd.DataFrame(data_stat)
+        df_stat.t_stat = df_stat.t_stat.round(4)
+        df_stat.p_value = df_stat.p_value.round(6)
+        df_stat.sort_values(by='variable', ascending=True, inplace=True)
 
-    return df_chi_square
+    return df_stat
+
+
+def get_anova_levene_test(df, tyte_test: Literal['anova', 'levene'], values_columns:list, categorical_columns:list):
+
+    data_stat = []
+
+    for vc in values_columns:
+    
+        for category in categorical_columns:
+            domains = df[category].unique()
+            groups = []
+            for d in domains:
+                group = df[df[category] == d][vc]
+                groups.append(list(group))
+    
+            # stat: type test statistic
+            if tyte_test == 'anova':
+                stat, p = stats.f_oneway(*groups)
+            elif tyte_test == 'levene':
+                stat, p = stats.levene(*groups)
+    
+            # p: p-value of the test 
+            if p < 0.05:
+                significance = 1
+            else:
+                significance = 0
+            values = dict(variable_numerical = vc, categorical = category, stat = stat, p_value = p, significance = significance)
+    
+            data_stat.append(values)
+
+    df_stat = pd.DataFrame(data_stat)
+
+    numeric_cols = df_stat.select_dtypes(include='number')
+    df_stat[numeric_cols.columns] = numeric_cols.round(6)
+    df_stat.reset_index(drop=True, inplace=True)
+    
+    return df_stat
+
+
+def get_welch_anova_test(df:pd.DataFrame, binary_column:str, variables_multi_category:list):
+
+    list_df = []
+    
+    for v in variables_multi_category:
+        anova_welch = pg.welch_anova(dv=binary_column, between=v, data=df)
+        anova_welch.insert(0, 'dv', binary_column)
+        list_df.append(anova_welch)
+    
+    df_stat = pd.concat(list_df, axis=0)
+
+    numeric_cols = df_stat.select_dtypes(include='number')
+    df_stat[numeric_cols.columns] = numeric_cols.round(6)
+    df_stat.reset_index(drop=True, inplace=True)
+    
+    return df_stat
+
+
+def get_gameshowell_test(df, binary_column:str, variables_multi_category:list):
+
+    list_df = []
+    
+    for v in variables_multi_category:
+        gameshowell = pg.pairwise_gameshowell(dv=binary_column, between=v, data=df)
+        gameshowell.insert(0, 'dv', binary_column)
+        gameshowell.insert(1, 'between', v)
+        list_df.append(gameshowell)
+
+    df_stat = pd.concat(list_df, axis=0)
+
+    numeric_cols = df_stat.select_dtypes(include='number')
+    df_stat[numeric_cols.columns] = numeric_cols.round(6)
+    df_stat.reset_index(drop=True, inplace=True)
+    
+    return df_stat
+
+
+def get_variance_inflation_factor(df, variables_analyzed, print_vif = True):
+    X = df[variables_analyzed]
+    X = add_constant(X)
+    
+    vif = pd.DataFrame()
+    vif["feature"] = X.columns
+    # Check the VIF for each column of X
+    vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+    vif["tolerance"] = 1 / vif["VIF"]
+    if print_vif:
+        print_tabulate_df(vif)
+    else:
+        return vif
+
+
+def get_columns_categorical(df, limit_):
+    columns = []
+    values = []
+    for i, v in zip(df.nunique().index, df.nunique().values):
+        if v <= limit_:
+            unique_values = df[i].unique()
+            columns.append(i)
+            values.append(sorted(unique_values))
+    return columns, values
+
+
+def get_columns_numeric(df, limit_categorical:int=5):
+    numerics = df.select_dtypes(include=['number']).columns.tolist()
+    categorical, _ = get_columns_categorical(df, limit_categorical)
+    numerics = list(set(numerics).difference(set(categorical)))
+    return numerics
 
 
 def get_bins_rule_freedman_diaconis(list_values):
