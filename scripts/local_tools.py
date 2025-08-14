@@ -524,6 +524,10 @@ def identify_columns_binary_values(df: pd.DataFrame):
     return columns
 
 
+def get_columns_binary(df:pd.DataFrame):
+    return identify_columns_binary_values(df)
+
+
 def print_tabulate_df(df:pd.DataFrame, limit_rows:int=100, **kwargs):
     '''
     Print up to the first 100 rows of the dataframe
