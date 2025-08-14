@@ -582,3 +582,32 @@ def print_tabulate_df(df:pd.DataFrame, limit_rows:int=100, **kwargs):
     )
     
     print(table)
+
+
+def adjust_column_names(df):
+    df = df.copy()
+    df.columns = [
+        re.sub(r"[^\w]+", "_", col.strip())  # replaces non-alphanumeric characters and spaces with "_"
+        for col in df.columns
+    ]
+    return df
+
+
+def optimal_bins(df, feature, target):
+    optb = OptimalBinning(name=feature, dtype="numerical", solver="cp")
+    optb.fit(df[feature], df[target])
+    return optb.transform(df[feature], metric="bins")
+
+
+def filter_startswith(list_value, startswith_value:str):
+    """
+    Returns all list elements that begin with 'startswith_value' prefix.
+
+    Args:
+    list_value (list): List of strings.
+    startswith_value (str): The prefix to filter.
+
+    Returns:
+    list: List containing only elements that begin with 'startswith_value' prefix.
+    """
+    return [item for item in list_value if isinstance(item, str) and item.startswith(startswith_value)]
