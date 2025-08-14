@@ -1,0 +1,31 @@
+# Python
+python==3.11.7
+
+# Data manipulation
+pandas==2.3.1
+numpy==1.26.4
+
+# Data visualization
+matplotlib==3.10.0
+seaborn==0.13.2
+
+# Machine Learning
+scikit-learn==1.3.0
+imbalanced-learn==0.13.0
+xgboost==1.7.6
+lightgbm==3.3.5
+catboost==1.2.3
+
+# Estatística e análise
+scipy==1.15.2
+statsmodels==0.14.0
+pingouin==0.5.5
+optbinning==0.20.1
+
+# Visualização avançada de modelos
+yellowbrick==1.5.0
+
+# Outros
+jupyterlab==4.4.3
+requests==2.32.3
+tabulate==0.9.0
