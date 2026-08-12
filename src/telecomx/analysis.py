@@ -8,7 +8,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import warnings
 
-import scripts.local_tools as lt
+import utils.local_tools as lt
 
 
 def carregar_dados_telecomx_normalizado(caminho_arquivo_json: str, imprimir=True):

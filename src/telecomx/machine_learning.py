@@ -1,6 +1,5 @@
 from typing import Union
 import copy
-import warnings
 
 import numpy as np
 import pandas as pd
@@ -10,7 +9,6 @@ import matplotlib.pyplot as plt
 
 from scipy.stats import f_oneway
 from scipy.stats import levene
-from scipy import stats
 import pingouin as pg
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -23,7 +21,7 @@ from sklearn.metrics import (
 )
 from yellowbrick.classifier import ClassificationReport
 
-import scripts.local_tools as lt
+import utils.local_tools as lt
 
 
 def graf_correlacao_variaveis(df, colunas_analise, tam_figura:tuple=(8, 8), tam_fonte:int=12):
