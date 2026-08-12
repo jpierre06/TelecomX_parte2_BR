@@ -50,22 +50,38 @@ TelecomX_parte2_BR/
 ├── dados/
 │ └── dados_tratados.csv # Dados utilizados no projeto
 │
-├── scripts/
-│ ├── local_tools.py # Funções genéricas de apoio
-│ ├── telecomx_analysis.py # Funções específicas de EDA e visualização
-│ └── telecomx_machine_learning.py # Funções de avaliação de modelos ML
+├── src
+├──  __pycache__
+├──  telecomx
+│     ├── __init__.py
+│     ├── analysis.py
+│     └── machine_learning.py
+├──  telecomx_2.egg-info
+│     ├── PKG-INFO
+│     ├── SOURCES.txt
+│     ├── dependency_links.txt
+│     ├── requires.txt
+│     └── top_level.txt
+└──  utils
+     ├── __init__.py
+     └── local_tools.py
 │
-├── TelecomX.ipynb # Notebook principal com EDA e modelagem
-│
-├── TelecomX-DecisionTree.ipynb
-├── TelecomX-LogisticRegression.ipynb
-├── TelecomX-RandomForest.ipynb
-├── TelecomX-XGBoost.ipynb
-├── TelecomX-CatBoost.ipynb
-├── TelecomX-LightGBM.ipynb
+├── notebooks/
+├──  jupyter
+│    ├── TelecomX-CatBoost.ipynb
+│    ├── TelecomX-DecisionTree.ipynb
+│    ├── TelecomX-LightGBM.ipynb
+│    ├── TelecomX-LogisticRegression.ipynb
+│    ├── TelecomX-RandomForest.ipynb
+│    ├── TelecomX-XGBoost.ipynb
+│    └── TelecomX.ipynb # Notebook principal com EDA e modelagem
+└──   marimo
 │
 ├── README.md # Este arquivo
-└── requirements.txt # Dependências do projeto
+├── python-version # Versão Python - UV
+├── pyproject.toml # Configuração de gerenciamento do projeto - UV
+├── requirements.txt # Dependências do projeto
+└── uv.lock # Dependências do projeto - UV
 ```
 
 ---
