@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "telecomx-2"
+version = "0.1.0"
+description = "Projeto de Machine Learning"
+readme = "README.md"
+requires-python = "==3.14.5"
+dependencies = [
+    "catboost==1.2.10",
+    "imbalanced-learn==0.14.2",
+    "lightgbm==4.7.0",
+    "marimo>=0.23.16",
+    "matplotlib==3.11.1",
+    "numpy==2.5.2",
+    "optbinning>=0.20.0",
+    "pandas==3.0.5",
+    "pingouin==0.6.1",
+    "requests==2.34.2",
+    "scikit-learn==1.9.0",
+    "scipy==1.18.0",
+    "seaborn==0.13.2",
+    "statsmodels==0.14.6",
+    "tabulate==0.10.0",
+    "xgboost==3.4.0",
+    "yellowbrick==1.5",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3.0",
+    "pydocstyle>=6.3.0",
+    "pyperclip>=1.11.0",
+    "pytest>=9.1.1",
+    "ruff>=0.16.2",
+]
