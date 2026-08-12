@@ -6,10 +6,16 @@ Challenge do Curso de Machine Learning faz parte da formação de Data Science d
 
 # 📊 Projeto de Predição de Churn - TelecomX
 
-![Python](https://img.shields.io/badge/Python-3.11.7-blue)
+![Python](https://img.shields.io/badge/Python-3.14.5-blue)
+![uv](https://img.shields.io/badge/uv-package_manager-DE5FE9)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-blueviolet)
-![Pandas](https://img.shields.io/badge/Pandas-Data_Analysis-yellow)
+![marimo](https://img.shields.io/badge/marimo-%3E%3D0.23.16-F5D90A)
+![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.9.0-blueviolet)
+![Pandas](https://img.shields.io/badge/Pandas-3.0.5-yellow)
+![NumPy](https://img.shields.io/badge/NumPy-2.5.2-013243)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-3.11.1-11557c)
+![Seaborn](https://img.shields.io/badge/Seaborn-0.13.2-4c72b0)
+![imbalanced-learn](https://img.shields.io/badge/imbalanced--learn-0.14.2-orange)
 
 Este projeto tem como objetivo desenvolver um modelo preditivo de **Churn** (evasão de clientes) para uma operadora de telecomunicações, utilizando técnicas de Machine Learning. A análise foi realizada em um ambiente Jupyter Notebook, com foco em reutilização de código, padronização de processos e interpretabilidade dos resultados.
 
@@ -26,8 +32,7 @@ Este projeto tem como objetivo desenvolver um modelo preditivo de **Churn** (eva
 7. [Modelagem de Machine Learning](#modelagem-de-machine-learning)
 8. [Scripts Personalizados](#scripts-personalizados)
 9. [Métricas de Avaliação](#métricas-de-avaliação)
-10. [Contribuição](#contribuição)
-11. [Licença](#licença)
+10. [Contato](#contato)
 
 ---
 
@@ -64,7 +69,7 @@ TelecomX_parte2_BR/
 │     └── top_level.txt
 └──  utils
      ├── __init__.py
-     └── local_tools.py
+     └── local_tools.py	
 │
 ├── notebooks/
 ├──  jupyter
@@ -89,7 +94,7 @@ TelecomX_parte2_BR/
 ## ⚙️ Requisitos e Dependências
 
 ### Versão do Python
-- **Python 3.11.7**
+- **Python 3.14.5**
 
 ### Bibliotecas Principais
 - `pandas`, `numpy` – manipulação de dados
@@ -100,6 +105,7 @@ TelecomX_parte2_BR/
 - `pingouin`, `scipy` – estatística inferencial
 - `optbinning` – binning otimizado
 - `jupyter` – ambiente de desenvolvimento
+- `marimo` – ambiente de desenvolvimento
 
 <br>
 
@@ -112,22 +118,22 @@ git clone https://github.com/jpierre06/TelecomX_parte2_BR.git
 cd TelecomX_parte2_BR
 ```
 
-2 - Instale as dependências:
+2 - Instale as dependências com o [uv](https://docs.astral.sh/uv/):
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
 
 3 - Inicie o Jupyter Notebook:
 
 ```bash
-jupyter notebook
+uv run jupyter notebook
 ```
 
 4 - Abra o notebook principal:
 
-* Navegue até notebooks/TelecomX.ipynb e execute as células em ordem.
+* Navegue até notebooks/jupyter/TelecomX.ipynb e execute as células em ordem.
 
 5 - (Opcional) Teste outros modelos:
 
@@ -170,7 +176,7 @@ O notebook principal realiza uma análise exploratória detalhada, incluindo:
 * **Padronização** com `StandardScaler` (para modelos sensíveis à escala)
 * **Pipeline completo** com `imblearn.Pipeline`
 
-### Métricas de Avaliação
+### Métricas Utilizadas
 
 * Acurácia, Precisão, Recall, F1-Score
 * ROC AUC, Curva ROC e Precision-Recall
@@ -183,7 +189,7 @@ O notebook principal realiza uma análise exploratória detalhada, incluindo:
 
 Para modularizar e reutilizar o código, foram criados três scripts:
 
-`scripts/local_tools.py`
+`src/util/local_tools.py`
 
 * Funções genéricas de apoio:
 	* *`get_variance_inflation_factor()`*: cálculo de VIF
@@ -194,7 +200,7 @@ Para modularizar e reutilizar o código, foram criados três scripts:
 
 <br>
 
-`scripts/telecomx_analysis.py`
+`src/telecomx/analysis.py`
 
 * Funções específicas para análise da base TelecomX:
 
@@ -205,7 +211,7 @@ Para modularizar e reutilizar o código, foram criados três scripts:
 
 <br>
 
-`scripts/telecomx_machine_learning.py`
+`src/telecomx/machine_learning.py`
 
 * Funções para avaliação de modelos:
 	* *`avaliar_modelo():`* exibe métricas completas (acurácia, recall, F1, etc.)
@@ -221,12 +227,12 @@ Para modularizar e reutilizar o código, foram criados três scripts:
 
 As métricas foram escolhidas com base no impacto de negócio:
 
-| Métrica | Prioridade | Justificativa | 
-|---|---|---|
-| Recall | Alta | Identificar a maior parte dos clientes que vão sair | 
-| Precisão | Média | Evitar campanhas de retenção desnecessárias | 
-| F1-Score | Alta | Equilíbrio entre recall e precisão | 
-| ROC AUC | Média | Avaliação geral do poder discriminativo |
+| Métrica  | Prioridade | Justificativa                                        |
+| -------- | ---------- | ----------------------------------------------------- |
+| Recall   | Alta       | Identificar a maior parte dos clientes que vão sair |
+| Precisão | Média      | Evitar campanhas de retenção desnecessárias         |
+| F1-Score | Alta       | Equilíbrio entre recall e precisão                  |
+| ROC AUC  | Média      | Avaliação geral do poder discriminativo             |
 
 📌 Dica de negócio: Se o custo de retenção for alto, priorize precisão. Se a perda de clientes for crítica, priorize recall. 
 
