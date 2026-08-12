@@ -31,6 +31,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mypy>=2.3.0",
+    "nbformat>=5.11.0",
     "pydocstyle>=6.3.0",
     "pyperclip>=1.11.0",
     "pytest>=9.1.1",
