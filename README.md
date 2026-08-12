@@ -111,33 +111,37 @@ TelecomX_parte2_BR/
 
 ## ▶️ Como Executar
 
-1 - Clone o repositório
+1. Clone o repositório
 
 ```bash
 git clone https://github.com/jpierre06/TelecomX_parte2_BR.git
 cd TelecomX_parte2_BR
 ```
 
-2 - Instale as dependências com o [uv](https://docs.astral.sh/uv/):
+2. Instale as dependências com o [uv](https://docs.astral.sh/uv/):
 
 ```bash
 uv sync
 ```
 
 
-3 - Inicie o Jupyter Notebook:
+3. Inicie o Jupyter Notebook:
 
 ```bash
 uv run jupyter notebook
 ```
 
-4 - Abra o notebook principal:
+4. Abra o notebook principal:
 
-* Navegue até notebooks/jupyter/TelecomX.ipynb e execute as células em ordem.
+* Utilizando Jupyterlab
+  * Navegue até notebooks/jupyter/TelecomX.ipynb e execute as células em ordem.
 
-5 - (Opcional) Teste outros modelos:
+* Utilizando marimo
+  * Navegue até notebooks/marimo/TelecomX.py e execute as células em ordem.
 
-* Os notebooks individuais (TelecomX-\*.ipynb) permitem comparar diferentes algoritmos de ML.
+5. (Opcional) Teste outros modelos:
+
+* Os notebooks individuais (TelecomX-\*.ipynb e TelecomX-\*.py) permitem comparar diferentes algoritmos de ML.
 
 <br>
 
